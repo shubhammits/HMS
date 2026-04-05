@@ -69,6 +69,40 @@ This project is open-source and available under the MIT License.
 How to Push this to GitHub:
 Save this text as README.md in your D:\Project\H M S folder.
 
+=========================================================================================Database=====================================================================================
+
+🗄️ Database Architecture & Relations
+The system is powered by a relational database (hospital_db) consisting of three interconnected tables. Here is how they work together:
+
+1. users Table (Authentication Layer)
+This is the security gatekeeper of the application.
+
+Role: Stores administrative credentials (usernames and passwords).
+
+Connection: Every time a user launches hospital.py or inventry.py, the system queries this table to verify the login. Access to the patient and medicine data is only granted after a successful match.
+
+2. medicines Table (Inventory Master Data)
+This serves as the "Source of Truth" for all pharmaceutical products.
+
+Role: Stores comprehensive details for each medicine, including HSN Codes, Rack Numbers, Batch IDs, Expiry Dates, and Unit Prices.
+
+Data Flow: The hospital3.py module fetches the list of available medicines from this table to populate the dropdown menus. When a medicine is selected, the system pulls the Price per Unit and Rack Location from here to calculate the final bill.
+
+3. hospital Table (Transaction & Patient Records)
+This is the primary storage for patient history and prescriptions.
+
+Role: Stores patient-specific information such as NHS Numbers, Reference IDs, and Addresses, along with the specific dosage prescribed.
+
+Connection: It records which medicine was issued by linking the med_name from the medicines table to the patient's record. This allows the hospital to track which patient received which batch of medicine.
+
+🟢 Logical Data Flow
+Authorize: User validates identity via the users table.
+
+Fetch: The system populates the UI by pulling medicine names from the medicines table.
+
+Process: The system calculates the bill by multiplying the stock_qty from the user input with the price_per_unit from the medicines table.
+
+Commit: All patient details, including the selected medicine and auto-generated Ref/NHS numbers, are saved into the hospital table for future reference.
 Open your VS Code Terminal and run:
 
 Bash
