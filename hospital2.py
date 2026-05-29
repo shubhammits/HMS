@@ -4,7 +4,7 @@ from tkinter import messagebox
 import mysql.connector
 import os
 import tempfile
-from tkcalendar import DateEntry # <--- Calendar ke liye
+from tkcalendar import DateEntry # For calender
 
 # ================= LOGIN & SIGNUP SYSTEM =================
 class LoginSystem:
@@ -34,7 +34,7 @@ class LoginSystem:
 
     def signup_logic(self):
         if self.uname.get() == "" or self.passw.get() == "":
-            messagebox.showerror("Error", "Username aur Password bhariye")
+            messagebox.showerror("Error", "Fill username and Password here.")
             return
         try:
             conn = mysql.connector.connect(host="localhost", user="root", password="12345", database="hospital_db")
@@ -42,9 +42,9 @@ class LoginSystem:
             cursor.execute("INSERT INTO users VALUES (%s, %s)", (self.uname.get(), self.passw.get()))
             conn.commit()
             conn.close()
-            messagebox.showinfo("Success", "Account ban gaya! Ab Login karein")
+            messagebox.showinfo("Success", "Account has been created.")
         except:
-            messagebox.showerror("Error", "Ye Username pehle se maujood hai ya DB error")
+            messagebox.showerror("Error", "This username already exists.")
 
     def login_logic(self):
         try:
@@ -62,7 +62,7 @@ class LoginSystem:
                 messagebox.showerror("Error", "Invalid Username or Password")
             conn.close()
         except Exception as e:
-            messagebox.showerror("Error", f"Database connect nahi ho raha: {str(e)}")
+            messagebox.showerror("Error", f"Connection failed with database: {str(e)}")
 
 # ================= MAIN HOSPITAL APP =================
 class Hospital:
